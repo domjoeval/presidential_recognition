@@ -1,0 +1,124 @@
+
+% ---------------------------------------------------------------------------------------------------- %
+% Package loading
+% ---------------------------------------------------------------------------------------------------- %
+
+\usepackage{bm}
+\usepackage{appendixnumberbeamer}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage[scaled=0.7]{beramono}
+\usepackage{MnSymbol}
+\usefonttheme[onlymath]{serif}  % math font
+% ---------------------------------------------------------------------------------------------------- %
+% Set beamer theme
+% ---------------------------------------------------------------------------------------------------- %
+\mode<presentation>
+ {
+ \usetheme{Boadilla}
+ % colors
+ \setbeamercolor*{palette primary}{use=structure,fg=black,bg=purple3}
+ \setbeamercolor*{palette secondary}{use=structure,fg=white,bg=purple2}
+ \setbeamercolor*{palette tertiary}{use=structure,fg=white,bg=purple1}
+ \setbeamercolor{frametitle}{parent=titlelike}
+ \setbeamercolor{item projected}{parent=structure}
+ \setbeamercolor{structure}{bg=white,fg = handa} %black!75}%, fg=purple1}
+ \setbeamercolor{alerted text}{fg=purple2}
+ \setbeamercolor{background canvas}{bg=black!3}
+
+
+ % itemize
+ \setbeamertemplate{itemize items}{$\bullet$}
+ \setbeamertemplate{itemize subitem}{$\bullet$}
+ \setbeamertemplate{itemize subsubitem}{$\bullet$}
+ \setbeamertemplate{enumerate items}[default]
+ \setbeamertemplate{section in toc}[square]
+ \setbeamertemplate{subsection in toc}[circle]
+
+ % title location
+ \setbeamertemplate{frametitle}[default][center]
+
+ % spacingg
+ \setbeamersize{text margin left=20pt,text margin right=20pt}
+
+ % footer setting
+ %\setbeamertemplate{footline}[frame number]%{ }
+ \setbeamertemplate{navigation symbols}{}
+}
+
+% font
+%\usefonttheme{structurebold}
+\setbeamerfont{frametitle}{series=\bfseries, size=\Large}%, parent=structure}
+\setbeamerfont{title}{series=\bfseries}%, parent=structure}
+\setbeamerfont{alerted text}{series=\bfseries}%, parent=structure}
+\setbeamerfont{institute}{size=\normalsize}
+
+ 
+% ---------------------------------------------------------------------------------------------------- %
+% page number
+% ---------------------------------------------------------------------------------------------------- %
+
+\defbeamertemplate{footline}{higher page number}
+{%
+  \hfill%
+  %\usebeamercolor[fg]{page number in head/foot}%
+  %\usebeamerfont{page number in head/foot}%
+  \setbeamercolor{page number in head/foot}{fg=mDarkTeal}
+  \setbeamerfont{page number in head/foot}{size=\Large}
+  \insertframenumber\kern1em\vskip10pt%
+}
+
+\setbeamertemplate{footline}[higher page number]
+
+
+%% === math def ===
+\def\*#1{\bm{#1}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\bI}{\mathbf{I}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\hP}{\mathbb{P}}
+\newcommand{\hS}{\mathbb{S}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cZ}{\mathcal{Z}}
+\newcommand{\cY}{\mathcal{Y}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\Z}{\mathbf{Z}}
+
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\inner}[1]{\left\langle#1\right\rangle}
+
+
+\newcommand{\argmax}{\mathop{\rm arg~max}\limits}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\plim}{plim}
+\newcommand{\indep}{\perp\!\!\!\perp}
+
+%% === color def === %%
+% color def
+\usepackage{xcolor}
+\definecolor{purple1}{HTML}{623163} % heavy
+\definecolor{purple2}{HTML}{A85E83} % middle
+\definecolor{purple3}{HTML}{D8A1A5} % light
+\definecolor{mLightBrown}{HTML}{EB811B}
+\definecolor{mDarkTeal}{HTML}{23373b}
+\definecolor{handa}{HTML}{006284}
+
+
+%% === misc === %%
+
+\makeatletter
+\let\@@magyar@captionfix\relax
+\makeatother

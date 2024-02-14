@@ -1,0 +1,216 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx, url}
+\usepackage{rotating}
+\usepackage{multicol}
+\usepackage[small,it]{caption}
+\usepackage{subfig}
+\usepackage{fullpage}
+\usepackage{booktabs}
+\usepackage{epigraph}
+\usepackage[all]{xy}
+\usepackage[page]{appendix}
+\usepackage[normalem]{ulem}
+\usepackage[section]{placeins}
+\renewcommand{\appendixpagename}{\Large Appendix}
+
+%% blind version macro
+\newcommand{\blind}{0}
+\newcommand{\submission}{0}
+
+ 
+\usepackage{verbatim}
+\usepackage{ifxetex}
+\usepackage{bm}
+\usepackage{natbib}
+\if0\submission
+\usepackage[osf, p]{cochineal}
+\usepackage{FiraSans}
+% \usepackage[stix2]{newtxmath}
+\fi
+% \usepackage[cal=boondoxo]{mathalfa}
+%\usepackage[euler-digits,euler-hat-accent]{eulervmR}
+% \ifxetex
+%   \usepackage{unicode-math}
+%   \setmainfont{TeXGyreTermes-Regular}
+%   \setmathfont{TeX Gyre Termes Math}
+%   \setsansfont{Work Sans Light}
+%   \newcommand{\bm}[1]{\ensuremath{\symbf{#1}}}
+% \else
+%   \usepackage{mathpazo}%% For the math part
+%   \usepackage{tgtermes}
+%   \usepackage{bm}
+%   \fi
+
+\if0\submission
+\usepackage{multibib}
+\newcites{SM}{Supplemental Materials References}
+\newcites{MA}{Articles in Meta-analysis} 
+\fi
+
+%% Tikz for drawing figures
+\usepackage{pgf, tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\au}{\underline{a}}
+\newcommand{\Au}{\underline{A}}
+\newcommand{\xu}{\underline{x}}
+\newcommand{\Xu}{\underline{X}}
+\newcommand{\yu}{\underline{y}}
+\newcommand{\Yu}{\underline{Y}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\z}{\bm{z}}
+\newcommand{\Z}{\bm{Z}}
+\newcommand{\D}{\bm{D}}
+\newcommand{\dd}{\bm{d}}
+\newcommand{\obs}{\ensuremath{\textrm{obs}}}
+
+\newcommand{\vs}{\vspace{-\baselineskip}}
+% \theoremstyle{Assumption}
+% \newtheorem{assump}{Assumption}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+  
+\newcommand{\indep}{\perp\!\!\!\perp}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+ 
+\newcommand\cmnt[2]{\qquad{{\color{blue} \em #1---#2} \qquad}}
+\newcommand\editB[1]{{\color{blue} \em #1} }
+\newcommand\editR[1]{{\color{red} \em #1} }
+\newcommand\editG[1]{{\color{green} \em #1} }
+
+\if0\blind{}
+  \def\myauthor{Dominic Valentino}
+\else
+\def\myauthor{}
+\fi
+
+%% external reference to SM if blind
+\usepackage{xr}
+\if1\submission{}
+\externaldocument{batch_adaptive_supp}
+\fi
+
+% graphics path
+\graphicspath{ {../exhibits/} }
+
+
+%% Custom colors
+\definecolor{gray}{rgb}{0.459,0.438,0.471}
+\definecolor{crimson}{rgb}{0.6,0,0}
+\usepackage[plainpages=false, 
+            plainpages=false,  
+            pdfpagelabels, 
+            bookmarksnumbered,
+            pdftitle={}, 
+            pdfauthor={\myauthor},
+            pdfkeywords={},
+            colorlinks=true,
+            citecolor=crimson,
+            linkcolor=crimson,
+            urlcolor=crimson]{hyperref}
+
+            
+
+\title{\sffamily\bfseries{Speaker Recognition from Audio for the Social Sciences: Application to Campaign Advertising Strategy.}%
+  \if0\blind{}\thanks{}\fi%
+} 
+
+
+\if0\blind{}
+\author{Dominic Valentino\thanks{Department of Government, Harvard University. email: \texttt{\href{dvalentino@g.harvard.edu }{dvalentino@g.harvard.edu}}}}
+\fi
+\date{\today \if1\submission{}\fi}
+ 
+\begin{document}
+%TC:ignore
+\maketitle
+%TC:endignore
+
+
+% %TC:ignore
+% \begin{abstract}
+% 
+% 
+% 
+% \end{abstract}
+%\tableofcontents
+
+\if1\submission{}
+\setlength{\baselineskip}{1.9\baselineskip}
+\else
+\setlength{\baselineskip}{1.65\baselineskip}
+\fi
+
+% \clearpage
+
+%TC:endignore
+
+\section{Introduction}
+% Things to look up: 
+% - political science research that uses audio to do something other than basic transcription
+% - specific ML models i will train
+% - the campaign ad data I will use
+% 
+% Other notes:
+% - want to estimate how little audio data is needed to effectively train the model
+
+In recent years, technological advancement has allowed social scientists to begin tapping into the vast collection of video and audio data from political debates, speeches, advertisements, and other communications made by politicians and the public. Typically this type of data is analyzed by transcribing the audio into text \citep[e.g., ][]{tarr2023automated} or used for estimating the emotional arousal/vocal pitch of the speaker \citep[e.g., ][]{dietrich2019pitch, dietrich2019emotional}. I propose to extend the political scientist's toolbox by automatically detecting speaker identity in audio, thereby allowing researchers to treat the speaker, rather than the audio file, as the unit of analysis.
+
+To demonstrate its utility, I apply the tool to a corpus of presidential campaign advertising videos to assess whether candidates themsleves, as opposed to their surrogates, have become more vitriolic in their advertising. Recent work finds that, whereas there was once a strong norm against making explicit racial appeals in their ads for fear of backlash \citep{valentino2002cues}, audiences have since become more receptive to those same explicit racial appeals \citep{valentino2018changing}. I argue this is part of a broader downward trend in adherence to norms of civility in politics. Especially with the recent success of Donald Trump's bombastic and aggresive style, I predict that candidates are now making more vitriolic statements in their advertisements than in the past, and that they are more likely to be making these statements themselves as opposed to a surrogate.
+
+% Much existing work with speech data in political science uses entire audio files for transcription \citep[e.g., ][]{tarr2023automated} regardless of who is speaking and when. Research on emotional arousal/vocal pitch often avoids this problem by relying on audio that has already been segmented by humans, for example by analyzing congressional speeches \citep{dietrich2019pitch} or Supreme Court arguments \citep{dietrich2019emotional}.
+
+This paper makes several contributions. First, combining speaker identification with other methods for analyzing audio commonly used in the social sciences (e.g. transcription, vocal pitch, emotional arousal) unlocks the ability to apply these methods to individual speakers rather than entire audio clips. As such, the method described in this paper enhances existing audio analysis techniques, rather than replaceing them. Second, this paper produces a publicly-available set of speaker embeddings for all major presidential candidates dating to the 2000 election. Researchers interested in presidential audio can use these embeddings without having to produce their own training set, or they may extend the database beyond presidents to other politicians or public figures. Third and substantively, the paper advances our understanding of campaign advertising by applying issue detection and sentiment analysis to utterances from the candidates themselves compared with the advertisement as a whole.
+
+\section{Audio Data in Political Science}
+This section will review the use of audio data in political science in more detail and describe how the proposed methodology could expand upon it.
+
+\section{Declining Norms of Civility}
+This section will review what we know from political science about changing norms of civility.
+
+\section{Data}
+There are two main data sources involved in this study: presidential primary and general election debate video, used for training models to detect presidential candidates' voices in audio, and presidential campaign advertising videos, which are the substantive focal point of the study. I describe each in turn below.
+
+\subsection*{Presidential Debate Data}
+The goal of this study is to build a model that can take campaign advertising audio and detect when a candidate is speaking versus when they are not. The first step towards this goal is to compile a set of labeled audio data where the labels indicate who is speaking. I chose presidential debate video for this purpose because of its ready availability on YouTube, its relatively high audio quality, the extended and largely uninterrupted blocks of speech by each candidate, and the fact that only a single file per election is needed to capture all the candidates' voices.
+
+From YouTube, I collected the video of one debate per presidential election beginning with 2000, including the Democratic and Republican primaries to ensure that all major candidates are included even if they did not receive their party's nomination. Armed with this data, I extracted the audio from the video files and used speaker change detection (SCD) to identify segments of the audio corresponding to separate speakers \citep{bredin2021end}. With the audio segmented, I then manually label each segment with the speaker's identity, including an "other" category for speakers not of interest\footnote{This is the current stage of the project. All of the following steps will be completed subsequently.}. 
+
+Finally, I combine segments from the same speaker and extract speaker embeddings \citep{snyder2020x, Bredin2020, Coria2020}. This process uses a deep neural network (DNN) to take audio snippets of varying length and return a numeric vector of fixed length that represents the speaker's vocal fingerprint (voiceprint?). Because these embedding vectors have constant length, they can be compared using cosine similarity.
+
+\subsection*{Presidential Campaign Advertising Data}
+
+Substantively, this paper seeks to study how candidate strategy has changed over time regarding who says what in their advertisements. To that end, I am in the process of collecting presidential campaign advertising data dating back to 2000\footnote{I currently have direct access to presidential advertising in 2000, 2004, and 2008 as part of a project with Kosuke Imai and Adam Breuer.}.
+
+Very similarly to the presidential debate data, I will first extract and segment the advertising audio, create target speaker embeddings, and compare each target embedding to the ground truth embeddings using cosine similarity. Each target embedding will then be labeled according to the closest ground truth embedding. 
+
+\section{Models}
+
+This section will contain more detailed information regarding the segmentation and embedding models.
+
+
+\bibliography{../dissertation.bib}
+\bibliographystyle{apsr}
+
+% \clearpage
+% \begin{appendices}
+% \renewcommand{\thesection}{\Alph{section}}
+% \renewcommand\thefigure{SM.\arabic{figure}}
+% \renewcommand\thetable{SM.\arabic{table}}
+% \setcounter{lemma}{0}
+% \renewcommand{\thelemma}{SM.\arabic{lemma}}
+% 
+% \linespread{1.1}\selectfont
+% 
+% \input{speaker_recognition_appendix.tex}
+% 
+% \end{appendices}
+
+%\fi
+%TC:endignore
+\end{document}
