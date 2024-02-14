@@ -1,4 +1,5 @@
 from pyannote.audio import Pipeline
+from dotenv import load_dotenv
 import os
 
 def batch_diarize(input_directory, output_directory):
@@ -19,9 +20,13 @@ def batch_diarize(input_directory, output_directory):
             i += 1
 
 if __name__ == "__main__":
+
+    load_dotenv()
+    hf_auth = os.getenv("HF_AUTH")
+
     pipeline = Pipeline.from_pretrained(
     "pyannote/speaker-diarization-3.1",
-    use_auth_token="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")
+    use_auth_token=hf_auth)
     # Replace these paths with your input and output directories
     input_directory = "data/speech_audio"
     output_directory = "data/speech_audio_diarized"
