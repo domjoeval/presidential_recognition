@@ -1,4 +1,5 @@
 data/
+pr/
 *.Rds
 *.rds
 *.csv

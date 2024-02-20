@@ -32,8 +32,8 @@ def batch_convert(input_directory, output_directory):
 
 if __name__ == "__main__":
     # Replace these paths with your input and output directories
-    input_directory = "data/speech"
-    output_directory = "data/speech_audio"
+    input_directory = "data/speech_embedding"
+    output_directory = "data/speech_embedding"
 
     # Perform batch conversion
     batch_convert(input_directory, output_directory)
