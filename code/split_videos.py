@@ -20,12 +20,13 @@ def split_video(input_file, output_folder, csv_file):
             output_path = f"{output_folder}/{file_name}"
 
             video_clip = VideoFileClip(input_path + ".mp4").subclip(start_time, end_time)
-            video_clip.write_videofile(output_path + str(round(start_time, 3)) + ".mp4", codec='libx264', audio_codec='aac')
+            video_clip.write_videofile(output_path + "_" + str(round(start_time, 3)) + ".mp4", codec='libx264', audio_codec='aac')
             video_clip.close()
 
 if __name__ == "__main__":
-    input_folder = "data/speech"
-    output_folder = "data/speech_split"
-    csv_file = "data/speech_validation.csv"
+    print(os.getcwd())
+    input_folder = "data/ad_data"
+    output_folder = "data/ad_split"
+    csv_file = "data/ad_validation.csv"
 
     split_video(input_folder, output_folder, csv_file)
