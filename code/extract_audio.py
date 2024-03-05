@@ -9,9 +9,9 @@ def extract_and_convert_audio(input_path, wav_output_path, mp3_output_path):
     audio.export(wav_output_path, format="wav")
 
     # Save the audio as an MP3 file
-    audio.export(mp3_output_path, format="mp3")
+    # audio.export(mp3_output_path, format="mp3")
 
-def batch_convert(input_directory, output_directory):
+def batch_extract(input_directory, output_directory):
     # Create the output directory if it doesn't exist
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
@@ -36,4 +36,4 @@ if __name__ == "__main__":
     output_directory = "data/ad_audio"
 
     # Perform batch conversion
-    batch_convert(input_directory, output_directory)
+    batch_extract(input_directory, output_directory)
