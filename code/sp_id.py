@@ -29,7 +29,6 @@ def speaker_id(embeddings_directory, split_audio_directory, df, hf_auth):
     n = df.shape[0]
     for pres in embeddings_dict:
         temp_column = []
-        print(pres)
         for i in range(0, n):
             file_path = split_audio_directory + "/" + df[i, 'file_id'] + "_" + str(round(df[i, 'start'], 3)) + ".wav"
             temp_embedding = inference(file_path)

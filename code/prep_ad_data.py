@@ -6,13 +6,16 @@ from rttm_to_csv import *
 from split_audio import *
 from transcribe_audio_files import * 
 from sp_id import *
+from count_issues import *
+from label_emosent import *
 
 # declare project directories
 ad_directory = "data/ad_testing"
 audio_directory = "data/ad_audio_testing"
 diar_directory = "data/ad_audio_diarized_testing"
-split_audio_directory = "data/ad_audio_split_testing/"
-pres_embeddings_directory = "../data/speech_embedding_models"
+split_audio_directory = "data/ad_audio_split_testing"
+transcript_directory = "data/ad_transcripts_testing"
+pres_embeddings_directory = "data/speech_embedding_models"
 
 # extract audio from input directory videos --------------------------------------------------------------------------------
 batch_extract(ad_directory, audio_directory)
@@ -38,8 +41,8 @@ result_df
 .with_columns((pl.col("start") + pl.col("duration")).alias("end"))
 )
 
-# save result
-df.write_csv("data/ad_validation_testing.csv")
+# # save result
+# df.write_csv("data/ad_validation_testing.csv")
 
 # split audio --------------------------------------------------------------------------------------------------------------
 split_audio(audio_directory, split_audio_directory, df)
@@ -52,6 +55,35 @@ df_id = speaker_id(pres_embeddings_directory, split_audio_directory, df, hf_auth
 
 # get transcripts
 model = whisper.load_model("large")
-df_tr_id = transcribe_audio(model, "../data/ad_audio_split_testing", "../data/ad_transcripts_testing", df_id)
+df_tr_id = transcribe_audio(model, split_audio_directory, "../data/ad_transcripts_testing", df_id)
 
-# text analysis on transcript (sentiment analysis, issue detection)
+# issue detection on transcripts
+keywords_data = pl.read_csv("data/important_terms.csv") # get issue keywords from Tarr et al., 2023
+
+df_tr_id_is = df_tr_id # make copy of data for adding issue counts
+del df_tr_id # delete old
+
+n = df_tr_id_is.shape[0] # get number of rows
+for topic, keywords in zip(keywords_data["yt"], keywords_data["word"]):
+    temp_column = []
+    for i in range(0, n):
+        transcript = df_tr_id_is[i, 'transcript']
+        issue_count = count_issues(transcript, keywords)
+        temp_column.append(issue_count)
+    df_tr_id_is = df_tr_id_is.with_columns(pl.Series(name = str(topic) + "_count", values = temp_column))
+
+# sentiment and emotion classification on transcripts
+df_tr_id_is_es = df_tr_id_is
+del df_tr_id_is
+df_tr_id_is_es = df_tr_id_is_es.with_columns(pl.lit(999).alias("vader_sentiment")).with_columns(
+    pl.col("transcript").map_elements(lambda text: get_vader_sentiment(text), return_dtype=pl.String).alias("vader_sentiment")
+)
+
+# Apply the get_roberta_emotions function to each row and expand the result into multiple columns
+roberta_emotions_columns = {f"roberta_{emotion}": df_tr_id_is_es["transcript"].map_elements(lambda text: get_roberta_emotions(text).get(emotion, None), return_dtype=pl.Float32) for emotion in ['admiration', 'amusement', 'anger', 'annoyance', 'approval', 'caring', 'confusion', 'curiosity', 'desire', 'disappointment', 'disapproval', 'disgust', 'embarrassment', 'excitement', 'fear', 'gratitude', 'grief', 'joy', 'love', 'nervousness', 'optimism', 'pride', 'realization', 'relief', 'remorse', 'sadness', 'surprise', 'neutral']}
+
+df_tr_id_is_es = df_tr_id_is_es.hstack(
+    pl.DataFrame(roberta_emotions_columns)
+)
+
+df_tr_id_is_es.write_csv("data/ad_data_complete.csv")

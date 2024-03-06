@@ -33,13 +33,13 @@ def split_audio(input_dir, output_dir, segments_df = None, segments_csv = None):
             if row['duration'] < .5:
                 segment = segment + silence
             
-            segment.export(output_path + "_" + str(round(start_time, 3)) + ".wav", format="wav")
+            segment.export(output_path + "/" + "_" + str(round(start_time, 3)) + ".wav", format="wav")
 
 
 if __name__ == "__main__":
     # Specify the input directory containing WAV files, output directory, and CSV file with segments
-    input_directory = "data/ad_audio_testing/"
-    output_directory = "data/ad_audio_split_testing/"
+    input_directory = "data/ad_audio_testing"
+    output_directory = "data/ad_audio_split_testing"
     segments_csv_file = "data/ad_validation_initial.csv"
 
     # Process all WAV files in the input directory
